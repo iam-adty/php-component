@@ -11,14 +11,9 @@ class Text extends Component
         $this->value = $value;
     }
 
-    public function compile()
+    public function construct()
     {
         return $this->value;
-    }
-
-    public function value()
-    {
-        return $this->value();
     }
 
     public static function write($value = "")

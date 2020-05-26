@@ -1,6 +1,5 @@
 <?php namespace IamAdty;
 
-use IamAdty\Component\Html\Script;
 use IamAdty\Config\ConfigCollectionTrait;
 use IamAdty\Variable\Rule\GroupArrayToType;
 use IamAdty\Variable\Rule\Is\String_;
@@ -12,7 +11,7 @@ class Component
 
     use ConfigCollectionTrait;
 
-    protected function paramType()
+    protected function _paramType()
     {
         return [
             'children' => [
@@ -26,7 +25,7 @@ class Component
     public function __construct(...$params)
     {
         $params = Variable::from($params)->filter(
-            GroupArrayToType::create($this->paramType())
+            GroupArrayToType::create($this->_paramType())
         )->result();
 
         foreach ($params as $name => $value) {
@@ -39,21 +38,21 @@ class Component
         }
     }
 
-    public function compile()
+    public function construct()
+    {
+        return $this->_constructChildren();
+    }
+
+    protected function _constructChildren()
     {
         $result = "";
         foreach ($this->children as $children) {
             if (is_subclass_of($children, Component::class)) {
-                $result .= $children->compile();
+                $result .= $children->construct();
             } else {
                 $result .= $children;
             }
         }
         return $result;
-    }
-
-    public function render()
-    {
-        echo $this->compile();
     }
 }
