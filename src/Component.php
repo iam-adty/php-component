@@ -1,7 +1,9 @@
 <?php namespace IamAdty;
 
+use IamAdty\Component\Html\Script;
 use IamAdty\Config\ConfigCollectionTrait;
 use IamAdty\Variable\Rule\GroupArrayToType;
+use IamAdty\Variable\Rule\Is\String_;
 
 class Component
 {
@@ -15,7 +17,7 @@ class Component
         return [
             'children' => [
                 Component::class,
-                \string::class
+                String_::class
             ],
             'config' => Config::class
         ];
@@ -26,8 +28,6 @@ class Component
         $params = Variable::from($params)->filter(
             GroupArrayToType::create($this->paramType())
         )->result();
-
-        // d($params);
 
         foreach ($params as $name => $value) {
             $this->{$name} = $value;
