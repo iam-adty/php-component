@@ -13,7 +13,10 @@ class Component
     protected function paramType()
     {
         return [
-            'children' => Component::class,
+            'children' => [
+                Component::class,
+                \string::class
+            ],
             'config' => Config::class
         ];
     }
@@ -24,8 +27,10 @@ class Component
             GroupArrayToType::create($this->paramType())
         )->result();
 
-        foreach ($this->paramType() as $name => $paramType) {
-            $this->{$name} = $params[$paramType];
+        // d($params);
+
+        foreach ($params as $name => $value) {
+            $this->{$name} = $value;
         }
 
         foreach ($this->config as $config) {
